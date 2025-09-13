@@ -2,21 +2,34 @@ package challenge_mottu_2_semestre.challenge_mottu.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
+@Entity(name = "roles")
 @Table(name = "roles")
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
 
+    @Id
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    public String nome;
+    private RoleName nome = RoleName.ADMIN;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public RoleName getNome() {
+        return nome;
+    }
+
+    public void setNome(RoleName nome) {
+        this.nome = nome;
+    }
 }

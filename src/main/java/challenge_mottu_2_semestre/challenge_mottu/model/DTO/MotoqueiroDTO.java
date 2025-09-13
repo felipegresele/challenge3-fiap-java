@@ -1,31 +1,11 @@
-package challenge_mottu_2_semestre.challenge_mottu.model;
+package challenge_mottu_2_semestre.challenge_mottu.model.DTO;
 
-import jakarta.persistence.*;
+public class MotoqueiroDTO {
 
-@Entity(name = "motoqueiros")
-@Table(name = "motoqueiros")
-public class Motoqueiro {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name="nomecompleto")
     private String nomeCompleto;
-
     private String cpf;
-
     private String telefone;
-
     private boolean ativo;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNomeCompleto() {
         return nomeCompleto;

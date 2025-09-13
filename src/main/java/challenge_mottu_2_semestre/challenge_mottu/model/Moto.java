@@ -2,19 +2,10 @@ package challenge_mottu_2_semestre.challenge_mottu.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "motos")
 @Table(name = "motos")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class Moto {
 
     @Id
@@ -28,7 +19,7 @@ public class Moto {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ModeloMoto modelo = ModeloMoto.MOTTU_POP; //definindo como padrao
+    private ModeloMoto modelo = ModeloMoto.MOTTU_POP;
 
     @NotNull(message = "O ano da moto é obrigatório")
     @Min(value = 2020, message = "Ano mínimo permitido é 2020")
@@ -36,13 +27,13 @@ public class Moto {
     private Integer ano;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false) //define q esse campo na tabela do banco nao pode ser vazia como se fosse o @NotNull
+    @Column(nullable = false)
     private StatusMoto status = StatusMoto.DISPONIVEL;
 
     @NotNull(message = "A data de saída é obrigatória")
     private LocalDateTime dataSaida;
 
-    @NotNull(message = "A data de retorono é obrigatória")
+    @NotNull(message = "A data de retorno é obrigatória")
     private LocalDateTime dataRetorno;
 
     @ManyToOne
@@ -52,6 +43,78 @@ public class Moto {
     @ManyToOne(optional = false)
     @JoinColumn(name = "galpao_id", nullable = false)
     private Galpao galpao;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public ModeloMoto getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(ModeloMoto modelo) {
+        this.modelo = modelo;
+    }
+
+    public Integer getAno() {
+        return ano;
+    }
+
+    public void setAno(Integer ano) {
+        this.ano = ano;
+    }
+
+    public StatusMoto getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusMoto status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getDataSaida() {
+        return dataSaida;
+    }
+
+    public void setDataSaida(LocalDateTime dataSaida) {
+        this.dataSaida = dataSaida;
+    }
+
+    public LocalDateTime getDataRetorno() {
+        return dataRetorno;
+    }
+
+    public void setDataRetorno(LocalDateTime dataRetorno) {
+        this.dataRetorno = dataRetorno;
+    }
+
+    public Motoqueiro getMotoboyEmUso() {
+        return motoboyEmUso;
+    }
+
+    public void setMotoboyEmUso(Motoqueiro motoboyEmUso) {
+        this.motoboyEmUso = motoboyEmUso;
+    }
+
+    public Galpao getGalpao() {
+        return galpao;
+    }
+
+    public void setGalpao(Galpao galpao) {
+        this.galpao = galpao;
+    }
 
     public void atribuirMotoqueiroEmUmaMoto(Motoqueiro motoqueiro) {
         if (this.status != StatusMoto.TRANSITO) {
@@ -64,5 +127,4 @@ public class Moto {
         this.motoboyEmUso = null;
         this.status = StatusMoto.DISPONIVEL;
     }
-
 }

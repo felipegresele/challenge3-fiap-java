@@ -4,23 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "manutencao")
 @Table(name = "manutencao")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class Manutencao {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull(message = "Descrição é obrigatório")
@@ -28,7 +20,7 @@ public class Manutencao {
     private String descricao;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(nullable = false) //nao pode ser nulo este campo na tabela
+    @JoinColumn(nullable = false)
     private PrioridadeManutencao prioridadeManutencao = PrioridadeManutencao.MEDIA;
 
     @NotNull(message = "Data de abertura é obrigatória")
@@ -39,4 +31,52 @@ public class Manutencao {
     private LocalDateTime dataFechamento;
 
     private boolean emAndamento;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public PrioridadeManutencao getPrioridadeManutencao() {
+        return prioridadeManutencao;
+    }
+
+    public void setPrioridadeManutencao(PrioridadeManutencao prioridadeManutencao) {
+        this.prioridadeManutencao = prioridadeManutencao;
+    }
+
+    public LocalDateTime getDataAbertura() {
+        return dataAbertura;
+    }
+
+    public void setDataAbertura(LocalDateTime dataAbertura) {
+        this.dataAbertura = dataAbertura;
+    }
+
+    public LocalDateTime getDataFechamento() {
+        return dataFechamento;
+    }
+
+    public void setDataFechamento(LocalDateTime dataFechamento) {
+        this.dataFechamento = dataFechamento;
+    }
+
+    public boolean isEmAndamento() {
+        return emAndamento;
+    }
+
+    public void setEmAndamento(boolean emAndamento) {
+        this.emAndamento = emAndamento;
+    }
 }

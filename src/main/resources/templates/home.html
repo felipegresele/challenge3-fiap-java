@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mottu - Login e Cadastro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset */
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00ff7f;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #00ff7f;
+            border: none;
+            color: #000;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #00cc66;
+        }
+
+        /* Mensagens */
+        .success-message {
+            color: #00ff7f;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .error-message {
+            color: #ff4c4c;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.85);
+            transition: all 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: #1e1e1e;
+            margin: 10% auto;
+            padding: 30px 20px;
+            border: 2px solid #00ff7f;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            position: relative;
+            animation: popup 0.4s ease;
+        }
+
+        @keyframes popup {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .close {
+            color: #00ff7f;
+            float: right;
+            font-size: 26px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover { color: #00cc66; }
+
+        form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #00ff7f;
+            background-color: #121212;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        form input::placeholder {
+            color: #aaa;
+        }
+
+        form button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        /* Footer Mottu */
+        .footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .footer a { color: #00ff7f; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        @media(max-width: 500px) {
+            .buttons { flex-direction: column; }
+            button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">Mottu</div>
+    <h1>Bem-vindo! Faça login ou crie sua conta</h1>
+
+    <div class="buttons">
+        <button id="btnLogin">Login</button>
+        <button id="btnCadastro">Cadastrar</button>
+    </div>
+
+    <!-- Mensagens Thymeleaf -->
+    <p th:if="${successMessage}" class="success-message" th:text="${successMessage}"></p>
+    <p th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></p>
+</div>
+
+<!-- Modal Login -->
+<div id="modalLogin" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modalLogin')">&times;</span>
+        <h2>Login</h2>
+        <form method="POST" th:action="@{/api/mottu/login}">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Cadastro -->
+<div id="modalCadastro" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modalCadastro')">&times;</span>
+        <h2>Cadastrar</h2>
+        <form method="POST" th:action="@{/api/mottu/create}">
+            <input type="text" name="username" placeholder="Nome" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Senha" required>
+            <input type="number" name="roleId" placeholder="Role ID (1=Admin,2=Operador)" required>
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modalLogin = document.getElementById('modalLogin');
+    const modalCadastro = document.getElementById('modalCadastro');
+
+    document.getElementById('btnLogin').onclick = () => modalLogin.style.display = 'block';
+    document.getElementById('btnCadastro').onclick = () => modalCadastro.style.display = 'block';
+
+    function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modalLogin) modalLogin.style.display = "none";
+        if (event.target == modalCadastro) modalCadastro.style.display = "none";
+    };
+</script>
+</body>
+</html>

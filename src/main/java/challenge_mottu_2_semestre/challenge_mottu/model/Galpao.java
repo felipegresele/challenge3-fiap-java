@@ -2,28 +2,50 @@ package challenge_mottu_2_semestre.challenge_mottu.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
+@Entity(name = "galpoes")
 @Table(name = "galpoes")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class Galpao {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Nome do galpão é obrigatório")
     private String nome;
-    @NotNull(message = "Endereço do galpão é obrigatório")
+
     private String endereco;
-    @NotNull(message = "Capacidade do galpão é obrigatório")
+
     private int capacidade;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public int getCapacidade() {
+        return capacidade;
+    }
+
+    public void setCapacidade(int capacidade) {
+        this.capacidade = capacidade;
+    }
 }
