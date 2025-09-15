@@ -174,7 +174,7 @@
     <div class="modal-content">
         <span class="close" onclick="closeModal('modalLogin')">&times;</span>
         <h2>Login</h2>
-        <form method="POST" th:action="@{/api/mottu/login}">
+        <form method="POST" th:action="@{/doLogin}">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Senha" required>
             <button type="submit">Entrar</button>
@@ -187,7 +187,7 @@
     <div class="modal-content">
         <span class="close" onclick="closeModal('modalCadastro')">&times;</span>
         <h2>Cadastrar</h2>
-        <form method="POST" th:action="@{/api/mottu/create}">
+        <form method="POST" th:action="@{/create}">
             <input type="text" name="username" placeholder="Nome" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Senha" required>

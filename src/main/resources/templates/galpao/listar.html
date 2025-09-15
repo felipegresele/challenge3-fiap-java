@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Galpões</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #00ff7f;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #00ff7f;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #00ff7f;
+            color: #000;
+        }
+        a {
+            color: #00ff7f;
+            text-decoration: none;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #00cc66;
+        }
+        .mensagem {
+            margin: 15px 0;
+            font-weight: bold;
+            color: #00ff7f;
+        }
+        .btn-adicionar {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: #00ff7f;
+            color: #000;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn-adicionar:hover {
+            background: #00cc66;
+        }
+    </style>
+</head>
+<body>
+<h2>Lista de Galpões</h2>
+
+<p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
+
+<table th:if="${galpoes}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Endereço</th>
+        <th>Capacidade</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="g : ${galpoes}">
+        <td th:text="${g.id}"></td>
+        <td th:text="${g.nome}"></td>
+        <td th:text="${g.endereco}"></td>
+        <td th:text="${g.capacidade}"></td>
+        <td>
+            <a th:href="@{'/galpoes/editar/' + ${g.id}}">Editar</a>
+            <a th:href="@{'/galpoes/excluir/' + ${g.id}}">Excluir</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/galpoes/adicionar}" class="btn-adicionar">Adicionar Novo Galpão</a>
+</body>
+</html>

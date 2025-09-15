@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/mottu")
 public class UsuarioController {
 
     @Autowired
@@ -38,6 +37,10 @@ public class UsuarioController {
     @ResponseBody
     public ResponseEntity<?> cadastrarUsuario(@RequestBody UsuarioDTO userDTO) {
         try {
+            if (usuarioRepository.existsByEmail(userDTO.getEmail())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("Erro: já existe um usuário com esse email");
+            }
             Role role = roleRepository.findById(userDTO.getRoleId())
                     .orElseThrow(() -> new RuntimeException("Role não encontrada"));
 
@@ -76,52 +79,6 @@ public class UsuarioController {
         var usuarioModel = usuario.get();
         BeanUtils.copyProperties(dto, usuarioModel);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioRepository.save(usuarioModel));
-    }
-
-    @PostMapping("/create")
-    public String cadastrarViaForm(@RequestParam String username,
-                                   @RequestParam String email,
-                                   @RequestParam String password,
-                                   @RequestParam Long roleId,
-                                   Model model) {
-        try {
-            Role role = roleRepository.findById(roleId)
-                    .orElseThrow(() -> new RuntimeException("Role não encontrada!"));
-
-            Usuario user = new Usuario();
-            user.setEmail(email);
-            user.setUsername(username);
-            user.setPassword(password);
-            user.setRole(role);
-
-            usuarioRepository.save(user);
-
-            model.addAttribute("successMessage", "Usuário cadastro com sucesso!");
-        } catch (Exception e ) {
-            model.addAttribute("errorMessage", "Erro ao cadastrar: " + e.getMessage());
-        }
-        return "home";
-    }
-
-    @PostMapping("/login")
-    public String loginViaForm(@RequestParam String email,
-                               @RequestParam String password,
-                               Model model) {
-        Usuario user = usuarioRepository.findByEmail(email);
-
-        if (user == null || !user.getPassword().equals(password)) {
-            model.addAttribute("errorMessage", "Usuário não encontrado ou senha incorreta");
-            return "home";
-        }
-
-        model.addAttribute("successMessage", "Login realizado com sucesso!");
-        return "home"; // ou redireciona pra outra página, ex: "dashboard"
-    }
-
-    //rota para visualizar a tela de login do HTML
-    @GetMapping("/home")
-    public String home() {
-        return "home"; //nome do arquivo HTML
     }
 
 
