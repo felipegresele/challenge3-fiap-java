@@ -56,6 +56,15 @@
         a:hover {
             color: #00cc66;
         }
+        .ativo-content {
+            display: flex;
+            align-items: center;
+        }
+        .ativo-checkbox {
+            margin-top: 10px;
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 <body>
@@ -68,13 +77,16 @@
     <input type="text" name="nomeCompleto" required>
 
     <label>CPF:</label>
-    <input type="text" name="cpf" required>
+    <input type="text" maxLength="11" pattern="\d{11}" title="Digite somente números" name="cpf" required>
 
     <label>Telefone:</label>
     <input type="text" name="telefone" required>
 
-    <label>Ativo:</label>
-    <input type="checkbox" name="ativo" required>
+    <div class="ativo-content">
+        <label>Ativo:</label>
+        <input type="checkbox" name="ativo" class="ativo-checkbox">
+    </div>
+
 
     <button type="submit">Salvar</button>
 </form>

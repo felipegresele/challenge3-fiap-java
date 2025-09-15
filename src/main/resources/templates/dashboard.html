@@ -50,22 +50,22 @@
     <!-- Manutenção -->
     <div class="menu-item">
         <h3>Manutenção</h3>
-        <a th:href="@{/manutencoes/listar}">Ver Todos</a>
-        <a th:if="${usuario.role.nome.name() == 'ADMIN'}" th:href="@{/manutencoes/save}">Adicionar</a>
+        <a th:href="@{/manutencoes/todos}">Ver Todos</a>
+        <a th:if="${usuario.role.nome.name() == 'ADMIN'}" th:href="@{/manutencoes/adicionar}">Adicionar</a>
     </div>
 
     <!-- Moto -->
     <div class="menu-item">
         <h3>Moto</h3>
-        <a th:href="@{/motos/listar}">Ver Todas</a>
-        <a th:if="${usuario.role.nome.name() == 'ADMIN'}" th:href="@{/motos/save}">Adicionar</a>
+        <a th:href="@{/motos/todos}">Ver Todas</a>
+        <a th:if="${usuario.role.nome.name() == 'ADMIN'}" th:href="@{/motos/adicionar}">Adicionar</a>
     </div>
 
     <!-- Motoqueiro -->
     <div class="menu-item">
         <h3>Motoqueiro</h3>
-        <a th:href="@{/motoqueiros/listar}">Ver Todos</a>
-        <a th:if="${usuario.role.nome.name() == 'ADMIN'}" th:href="@{/motoqueiros/save}">Adicionar</a>
+        <a th:href="@{/motoqueiros/todos}">Ver Todos</a>
+        <a th:if="${usuario.role.nome.name() == 'ADMIN'}" th:href="@{/motoqueiros/adicionar}">Adicionar</a>
     </div>
 
 </div>

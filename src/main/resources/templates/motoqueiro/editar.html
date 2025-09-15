@@ -2,7 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Galpão</title>
+    <title>Editar Motoqueiros</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,7 +56,7 @@
 <body>
 <h2>Editar Motoqueiro</h2>
 
-<form th:action="@{'/motoqueiros/editar/' + ${galpao.id}}" method="post">
+<form th:action="@{'/motoqueiros/editar/' + ${motoqueiro.id}}" method="post">
     <input type="hidden" name="_method" value="put" />
 
     <label>Nome Completo:</label>
@@ -69,11 +69,11 @@
     <input type="text" name="telefone" th:value="${motoqueiro.telefone}" required>
 
     <label>Ativo:</label>
-    <input type="checkbox" name="ativo" th:value="${motoqueiro.ativo}" required>
+    <input type="checkbox" name="ativo" th:value="${motoqueiro.ativo}">
 
     <button type="submit">Atualizar</button>
 </form>
 
-<a th:href="@{/galpoes/todos}">Voltar para a lista</a>
+<a th:href="@{/motoqueiros/todos}">Voltar para a lista</a>
 </body>
 </html>
