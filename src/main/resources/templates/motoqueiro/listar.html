@@ -2,7 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Galpões</title>
+    <title>Lista de Motoqueiros</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -65,34 +65,36 @@
 </head>
 <body>
 <a th:href="@{/dashboard}" class="btn-voltar">Voltar ao dashboard</a>
-<h2>Lista de Galpões</h2>
+<h2>Lista de Motoqueiros</h2>
 
 <p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
 
-<table th:if="${galpoes}">
+<table th:if="${motoqueiros}">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Nome</th>
-        <th>Endereço</th>
-        <th>Capacidade</th>
+        <th>Nome Completo</th>
+        <th>CPF</th>
+        <th>Telefone</th>
+        <th>Ativo</th>
         <th>Ações</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="g : ${galpoes}">
+    <tr th:each="g : ${motoqueiros}">
         <td th:text="${g.id}"></td>
-        <td th:text="${g.nome}"></td>
-        <td th:text="${g.endereco}"></td>
-        <td th:text="${g.capacidade}"></td>
+        <td th:text="${g.nomeCompleto}"></td>
+        <td th:text="${g.cpf}"></td>
+        <td th:text="${g.telefone}"></td>
+        <td th:text="${g.ativo}"></td>
         <td>
-            <a th:href="@{'/galpoes/editar/' + ${g.id}}">Editar</a>
-            <a th:href="@{'/galpoes/excluir/' + ${g.id}}">Excluir</a>
+            <a th:href="@{'/motoqueiros/editar/' + ${g.id}}">Editar</a>
+            <a th:href="@{'/motoqueiros/excluir/' + ${g.id}}">Excluir</a>
         </td>
     </tr>
     </tbody>
 </table>
 
-<a th:href="@{/galpoes/adicionar}" class="btn-adicionar">Adicionar Novo Galpão</a>
+<a th:href="@{/motoqueiros/adicionar}" class="btn-adicionar">Adicionar Novo Motoqueiro</a>
 </body>
 </html>

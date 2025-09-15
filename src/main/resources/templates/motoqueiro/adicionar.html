@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar Galpão</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #00ff7f;
+        }
+        form {
+            margin-top: 20px;
+            max-width: 400px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: #00ff7f;
+            color: #000;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #00cc66;
+        }
+        .mensagem {
+            margin-top: 15px;
+            color: #00ff7f;
+            font-weight: bold;
+        }
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            color: #00ff7f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #00cc66;
+        }
+    </style>
+</head>
+<body>
+<h2>Adicionar Motoqueiro</h2>
+
+<p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
+
+<form th:action="@{/motoqueiros/adicionar}" method="post">
+    <label>Nome Completo:</label>
+    <input type="text" name="nomeCompleto" required>
+
+    <label>CPF:</label>
+    <input type="text" name="cpf" required>
+
+    <label>Telefone:</label>
+    <input type="text" name="telefone" required>
+
+    <label>Ativo:</label>
+    <input type="checkbox" name="ativo" required>
+
+    <button type="submit">Salvar</button>
+</form>
+
+<a th:href="@{/motoqueiros/todos}">Voltar para a lista</a>
+</body>
+</html>
