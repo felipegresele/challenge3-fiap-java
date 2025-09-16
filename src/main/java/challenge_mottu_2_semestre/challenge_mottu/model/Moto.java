@@ -12,28 +12,18 @@ public class Moto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "A placa da moto é obrigatória")
-    @Size(min = 7, max = 8, message = "A placa deve ter entre 7 e 8 caracteres")
-    @Column(nullable = false, unique = true, length = 8)
     private String placa;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private ModeloMoto modelo = ModeloMoto.MOTTU_POP;
 
-    @NotNull(message = "O ano da moto é obrigatório")
-    @Min(value = 2020, message = "Ano mínimo permitido é 2020")
-    @Max(value = 2026, message = "Ano máximo permitido é 2026")
     private Integer ano;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private StatusMoto status = StatusMoto.DISPONIVEL;
 
-    @NotNull(message = "A data de saída é obrigatória")
     private LocalDateTime dataSaida;
 
-    @NotNull(message = "A data de retorno é obrigatória")
     private LocalDateTime dataRetorno;
 
     @ManyToOne

@@ -1,23 +1,13 @@
-package challenge_mottu_2_semestre.challenge_mottu.model;
+package challenge_mottu_2_semestre.challenge_mottu.model.DTO;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import challenge_mottu_2_semestre.challenge_mottu.model.PrioridadeManutencao;
 import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Size;
-
 import java.time.LocalDateTime;
 
-@Entity(name = "manutencao")
-@Table(name = "manutencao")
-public class Manutencao {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ManutencaoDTO {
 
     private String descricao;
 
-    @Enumerated(EnumType.STRING)
     private PrioridadeManutencao prioridadeManutencao = PrioridadeManutencao.MEDIA;
 
     @PastOrPresent(message = "Data de abertura não pode ser futura")
@@ -27,14 +17,6 @@ public class Manutencao {
     private LocalDateTime dataFechamento;
 
     private boolean emAndamento;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getDescricao() {
         return descricao;
@@ -75,4 +57,5 @@ public class Manutencao {
     public void setEmAndamento(boolean emAndamento) {
         this.emAndamento = emAndamento;
     }
+
 }
