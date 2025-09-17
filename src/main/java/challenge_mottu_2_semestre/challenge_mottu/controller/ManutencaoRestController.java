@@ -18,7 +18,7 @@ import java.util.Optional;
 
 
 @Controller
-@RequestMapping("/manutencao")
+@RequestMapping("/manutencoes")
 public class ManutencaoRestController {
 
 

@@ -1,4 +1,4 @@
-package challenge_mottu_2_semestre.challenge_mottu.controller;
+package challenge_mottu_2_semestre.challenge_mottu.controller.thymeleaf;
 
 import challenge_mottu_2_semestre.challenge_mottu.model.DTO.GalpaoDTO;
 import challenge_mottu_2_semestre.challenge_mottu.model.Galpao;

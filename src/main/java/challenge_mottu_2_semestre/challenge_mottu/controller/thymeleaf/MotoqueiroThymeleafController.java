@@ -1,4 +1,4 @@
-package challenge_mottu_2_semestre.challenge_mottu.controller;
+package challenge_mottu_2_semestre.challenge_mottu.controller.thymeleaf;
 
 import challenge_mottu_2_semestre.challenge_mottu.model.DTO.MotoqueiroDTO;
 import challenge_mottu_2_semestre.challenge_mottu.model.Motoqueiro;
@@ -71,7 +71,7 @@ public class MotoqueiroThymeleafController {
 
         // EDITAR GALPÃO
         @PostMapping("/editar/{id}")
-        public String editarmotoqueiro(@PathVariable Long id, MotoqueiroDTO dto, Model model) {
+        public String editarMotoqueiro(@PathVariable Long id, MotoqueiroDTO dto, Model model) {
             Optional<Motoqueiro> motoqueiroOptional = motoqueiroRepository.findById(id);
             if (motoqueiroOptional.isPresent()) {
                 Motoqueiro motoqueiro = motoqueiroOptional.get();
