@@ -76,17 +76,20 @@
     </select>
 
     <label>Data de Abertura:</label>
-    <input type="datetime-local" th:field="*{dataAbertura}" required />
+    <input type="datetime-local" th:field="*{dataAbertura}" th:value="${dataAberturaFormatada}" required />
+
+    <div th:if="${mensagem != null}" class="erro" th:text="${mensagem}"></div>
 
     <label>Data de Fechamento:</label>
-    <input type="datetime-local" th:field="*{dataFechamento}" />
+    <input type="datetime-local" th:field="*{dataFechamento}" th:value="${dataFechamentoFormatada}" />
+
+    <div><h1>Se o serviço de manutencao ainda não foi finalizado não preencha nada no campo acima</h1></div>
 
     <label>Em andamento:</label>
     <input type="checkbox" th:field="*{emAndamento}" />
 
     <button type="submit">Salvar</button>
 </form>
-
 
 <a th:href="@{/manutencoes/todos}">Voltar para a lista</a>
 </body>

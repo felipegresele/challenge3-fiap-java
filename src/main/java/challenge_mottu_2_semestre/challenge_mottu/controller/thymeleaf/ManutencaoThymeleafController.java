@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +28,24 @@ public class ManutencaoThymeleafController {
     @Autowired
     private ManutencaoRepository manutencaoRepository;
 
+    public String formatarData(LocalDateTime data) {
+        if (data == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        return data.format(formatter);
+    }
+
     // LISTAR GALPÕES
     @GetMapping("/todos")
     public String listarmManutencoes(Model model) {
         List<Manutencao> manutencoes = manutencaoRepository.findAll();
+        for (Manutencao manutencao : manutencoes) {
+            if (manutencao.getDataFechamento() == null) {
+                model.addAttribute("Ainda não finalizado");
+            }
+        }
+
         model.addAttribute("manutencoes", manutencoes);
 
         if (manutencoes.isEmpty()) {
@@ -40,13 +57,30 @@ public class ManutencaoThymeleafController {
 
     // MOSTRAR FORMULÁRIO ADICIONAR
     @GetMapping("/adicionar")
-    public String mostrarFormularioAdicionar() {
+    public String mostrarFormularioAdicionar(Model model) {
+
+        ManutencaoDTO manutencaoDTO = new ManutencaoDTO();
+
+        String dataAberturaFormatada = formatarData(manutencaoDTO.getDataAbertura());
+        String dataFechamentoFormatada = formatarData(manutencaoDTO.getDataFechamento());
+
+        model.addAttribute("manutencaoDTO", manutencaoDTO);
+        model.addAttribute("dataAberturaFormatada", dataAberturaFormatada);
+        model.addAttribute("dataFechamentoFormatada", dataFechamentoFormatada);
+
         return "manutencao/adicionar";
     }
 
     // ADICIONAR GALPÃO
     @PostMapping("/adicionar")
     public String adicionarManutencao(ManutencaoDTO dto, Model model) {
+
+        if (dto.getDataAbertura() != null && dto.getDataAbertura().isAfter(LocalDateTime.now())) {
+            model.addAttribute("mensagem", "A data de abertura não pode ser no futuro.");
+            model.addAttribute("manutencaoDTO", dto);
+            return "manutencao/editar";
+        }
+
         Manutencao manutencao = new Manutencao();
         manutencao.setDescricao(dto.getDescricao());
         manutencao.setPrioridadeManutencao(dto.getPrioridadeManutencao());

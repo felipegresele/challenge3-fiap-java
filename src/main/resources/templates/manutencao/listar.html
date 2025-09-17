@@ -65,34 +65,37 @@
 </head>
 <body>
 <a th:href="@{/dashboard}" class="btn-voltar">Voltar ao dashboard</a>
-<h2>Lista de Galpões</h2>
+<h2>Lista de Manutenções</h2>
 
 <p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
 
-<table th:if="${galpoes}">
+<table th:if="${manutencoes}">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Nome</th>
-        <th>Endereço</th>
-        <th>Capacidade</th>
+        <th>Descrição</th>
+        <th>Data Abertura</th>
+        <th>Data Fechamento</th>
+        <th>Em Andamento</th>
         <th>Ações</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="g : ${galpoes}">
+    <tr th:each="g : ${manutencoes}">
         <td th:text="${g.id}"></td>
-        <td th:text="${g.nome}"></td>
-        <td th:text="${g.endereco}"></td>
-        <td th:text="${g.capacidade}"></td>
+        <td th:text="${g.descricao}"></td>
+        <td th:text="${g.prioridadeManutencao}"></td>
+        <td th:text="${g.dataAbertura}"></td>
+        <td th:text="${g.dataFechamento != null ? #dates.format(g.dataFechamento, 'yyyy-MM-dd HH:mm') : 'Ainda não finalizado'}"></td>
+        <td th:text="${g.emAndamento}"></td>
         <td>
-            <a th:href="@{'/galpoes/editar/' + ${g.id}}">Editar</a>
-            <a th:href="@{'/galpoes/excluir/' + ${g.id}}">Excluir</a>
+            <a th:href="@{'/manutencoes/editar/' + ${g.id}}">Editar</a>
+            <a th:href="@{'/manutencoes/excluir/' + ${g.id}}">Excluir</a>
         </td>
     </tr>
     </tbody>
 </table>
 
-<a th:href="@{/galpoes/adicionar}" class="btn-adicionar">Adicionar Novo Galpão</a>
+<a th:href="@{/manutencoes/adicionar}" class="btn-adicionar">Adicionar Novo Manutenção</a>
 </body>
 </html>

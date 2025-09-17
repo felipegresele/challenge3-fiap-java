@@ -59,18 +59,30 @@
 <form th:action="@{'/galpoes/editar/' + ${galpao.id}}" method="post">
     <input type="hidden" name="_method" value="put" />
 
-    <label>Nome:</label>
-    <input type="text" name="nome" th:value="${galpao.nome}" required>
+    <label>Descrição:</label>
+    <input type="text" th:field="*{descricao}" required />
 
-    <label>Endereço:</label>
-    <input type="text" name="endereco" th:value="${galpao.endereco}" required>
+    <label>Prioridade:</label>
+    <select th:field="*{prioridadeManutencao}">
+        <option th:value="ALTA">Alta</option>
+        <option th:value="MEDIA">Média</option>
+        <option th:value="BAIXA">Baixa</option>
+    </select>
 
-    <label>Capacidade:</label>
-    <input type="number" name="capacidade" th:value="${galpao.capacidade}" required>
+    <label>Data de Abertura:</label>
+    <input type="datetime-local" th:field="*{dataAbertura}" required />
+
+    <label>Data de Fechamento:</label>
+    <input type="datetime-local" th:field="*{dataFechamento}" />
+
+    <div><h1>Se o serviço de manutencao ainda não foi finalizado não preencha nada no campo acima</h1></div>
+
+    <label>Em andamento:</label>
+    <input type="checkbox" th:field="*{emAndamento}" />
 
     <button type="submit">Atualizar</button>
 </form>
 
-<a th:href="@{/galpoes/todos}">Voltar para a lista</a>
+<a th:href="@{/manutencoes/todos}">Voltar para a lista</a>
 </body>
 </html>

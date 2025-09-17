@@ -51,14 +51,14 @@
     </style>
 </head>
 <body>
-<h2>Excluir Galpão</h2>
-<p>Tem certeza que deseja excluir o galpão <strong th:text="${galpao.nome}"></strong>?</p>
+<h2>Excluir Manutenção</h2>
+<p>Tem certeza que deseja excluir o manutencão<strong th:text="${manutencao.descricao}"></strong>?</p>
 
-<form th:action="@{'/galpoes/excluir/' + ${galpao.id}}" method="post">
+<form th:action="@{'/manutencoes/excluir/' + ${manutencoes.id}}" method="post">
     <input type="hidden" name="_method" value="delete" />
     <button type="submit">Confirmar</button>
 </form>
 
-<a th:href="@{/galpoes/todos}">Cancelar</a>
+<a th:href="@{/manutencoes/todos}">Cancelar</a>
 </body>
 </html>

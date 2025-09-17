@@ -50,6 +50,9 @@ public class MotoRestController {
         moto.setModelo(dto.getModelo());
         moto.setAno(dto.getAno());
         moto.setStatus(dto.getStatus());
+        moto.setDataSaida(dto.getDataSaida());
+        moto.setDataRetorno(dto.getDataRetorno());
+        moto.setMotoboyEmUso(dto.getMotoboyEmUso());
         moto.setGalpao(galpao.get());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(moto);

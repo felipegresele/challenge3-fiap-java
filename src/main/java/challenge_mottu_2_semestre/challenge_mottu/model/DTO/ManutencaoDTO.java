@@ -13,7 +13,6 @@ public class ManutencaoDTO {
     @PastOrPresent(message = "Data de abertura não pode ser futura")
     private LocalDateTime dataAbertura;
 
-    @PastOrPresent(message = "Data de fechamento não pode ser futura")
     private LocalDateTime dataFechamento;
 
     private boolean emAndamento;
