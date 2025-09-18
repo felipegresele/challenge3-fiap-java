@@ -63,7 +63,7 @@
 
 <p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
 
-<form th:action="@{/manutencoes/adicionar}" th:object="${manutencaoDTO}" method="post">
+<form th:action="@{/manutencoes-view/adicionar}" th:object="${manutencaoDTO}" method="post">
 
     <label>Descrição:</label>
     <input type="text" th:field="*{descricao}" required />
@@ -83,7 +83,12 @@
     <label>Data de Fechamento:</label>
     <input type="datetime-local" th:field="*{dataFechamento}" th:value="${dataFechamentoFormatada}" />
 
-    <div><h1>Se o serviço de manutencao ainda não foi finalizado não preencha nada no campo acima</h1></div>
+    <div><p>Se o serviço de manutencao ainda não foi finalizado não preencha nada no campo acima</p></div>
+
+    <label>Moto:</label>
+    <select th:field="*{motoId}">
+        <option th:each="moto : ${motos}" th:value="${moto.id}" th:text="${moto.placa}">Moto</option>
+    </select>
 
     <label>Em andamento:</label>
     <input type="checkbox" th:field="*{emAndamento}" />

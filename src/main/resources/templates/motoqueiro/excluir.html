@@ -2,7 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Excluir Galpão</title>
+    <title>Excluir Motoqueiro</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,11 +54,11 @@
 <h2>Excluir Motoqueiro</h2>
 <p>Tem certeza que deseja excluir o motoqueiro <strong th:text="${motoqueiro.nomeCompleto}"></strong>?</p>
 
-<form th:action="@{'/motoqueiros/excluir/' + ${motoqueiro.id}}" method="post">
+<form th:action="@{'/motoqueiros-view/excluir/' + ${motoqueiro.id}}" method="post">
     <input type="hidden" name="_method" value="delete" />
     <button type="submit">Confirmar</button>
 </form>
 
-<a th:href="@{/motoqueiros/todos}">Cancelar</a>
+<a th:href="@{/motoqueiros-view/todos}">Cancelar</a>
 </body>
 </html>

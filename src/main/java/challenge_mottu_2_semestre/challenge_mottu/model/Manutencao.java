@@ -27,6 +27,10 @@ public class Manutencao {
 
     private boolean emAndamento;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "moto_id", nullable = false)
+    private Moto moto;
+
     public Long getId() {
         return id;
     }
@@ -74,4 +78,13 @@ public class Manutencao {
     public void setEmAndamento(boolean emAndamento) {
         this.emAndamento = emAndamento;
     }
+
+    public Moto getMoto(){
+        return moto;
+    }
+
+    public void setMoto(Moto moto) {
+        this.moto = moto;
+    }
+
 }

@@ -56,7 +56,7 @@
 <body>
 <h2>Editar Galpão</h2>
 
-<form th:action="@{'/galpoes/editar/' + ${galpao.id}}" method="post">
+<form th:action="@{'/galpoes-view/editar/' + ${galpao.id}}" method="post">
     <input type="hidden" name="_method" value="put" />
 
     <label>Nome:</label>
@@ -71,6 +71,6 @@
     <button type="submit">Atualizar</button>
 </form>
 
-<a th:href="@{/galpoes/todos}">Voltar para a lista</a>
+<a th:href="@{/galpoes-view/todos}">Voltar para a lista</a>
 </body>
 </html>

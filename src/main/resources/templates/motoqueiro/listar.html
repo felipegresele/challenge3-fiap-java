@@ -88,13 +88,13 @@
         <td th:text="${g.telefone}"></td>
         <td th:text="${g.ativo}"></td>
         <td>
-            <a th:href="@{'/motoqueiros/editar/' + ${g.id}}">Editar</a>
-            <a th:href="@{'/motoqueiros/excluir/' + ${g.id}}">Excluir</a>
+            <a th:href="@{'/motoqueiros-view/editar/' + ${g.id}}">Editar</a>
+            <a th:href="@{'/motoqueiros-view/excluir/' + ${g.id}}">Excluir</a>
         </td>
     </tr>
     </tbody>
 </table>
 
-<a th:href="@{/motoqueiros/adicionar}" class="btn-adicionar">Adicionar Novo Motoqueiro</a>
+<a th:href="@{/motoqueiros-view/adicionar}" class="btn-adicionar">Adicionar Novo Motoqueiro</a>
 </body>
 </html>

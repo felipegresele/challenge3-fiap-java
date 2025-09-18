@@ -54,11 +54,11 @@
 <h2>Excluir Manutenção</h2>
 <p>Tem certeza que deseja excluir o manutencão<strong th:text="${manutencao.descricao}"></strong>?</p>
 
-<form th:action="@{'/manutencoes/excluir/' + ${manutencoes.id}}" method="post">
+<form th:action="@{'/manutencoes-view/excluir/' + ${manutencao.id}}" method="post">
     <input type="hidden" name="_method" value="delete" />
     <button type="submit">Confirmar</button>
 </form>
 
-<a th:href="@{/manutencoes/todos}">Cancelar</a>
+<a th:href="@{/manutencoes-view/todos}">Cancelar</a>
 </body>
 </html>

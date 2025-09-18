@@ -2,7 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Adicionar Galpão</title>
+    <title>Adicionar Motoqueiro</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -72,7 +72,7 @@
 
 <p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
 
-<form th:action="@{/motoqueiros/adicionar}" method="post">
+<form th:action="@{/motoqueiros-view/adicionar}" method="post">
     <label>Nome Completo:</label>
     <input type="text" name="nomeCompleto" required>
 
@@ -91,6 +91,6 @@
     <button type="submit">Salvar</button>
 </form>
 
-<a th:href="@{/motoqueiros/todos}">Voltar para a lista</a>
+<a th:href="@{/motoqueiros-view/todos}">Voltar para a lista</a>
 </body>
 </html>

@@ -17,6 +17,8 @@ public class ManutencaoDTO {
 
     private boolean emAndamento;
 
+    private Long motoId;
+
     public String getDescricao() {
         return descricao;
     }
@@ -57,4 +59,7 @@ public class ManutencaoDTO {
         this.emAndamento = emAndamento;
     }
 
+    public Long getMotoId() { return motoId; }
+
+    public void setMotoId(Long motoId) { this.motoId = motoId; }
 }

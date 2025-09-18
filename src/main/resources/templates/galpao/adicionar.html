@@ -63,7 +63,7 @@
 
 <p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
 
-<form th:action="@{/galpoes/adicionar}" method="post">
+<form th:action="@{/galpoes-view/adicionar}" method="post">
     <label>Nome:</label>
     <input type="text" name="nome" required>
 
@@ -76,6 +76,6 @@
     <button type="submit">Salvar</button>
 </form>
 
-<a th:href="@{/galpoes/todos}">Voltar para a lista</a>
+<a th:href="@{/galpoes-view/todos}">Voltar para a lista</a>
 </body>
 </html>

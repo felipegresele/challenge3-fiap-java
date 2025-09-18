@@ -86,13 +86,13 @@
         <td th:text="${g.endereco}"></td>
         <td th:text="${g.capacidade}"></td>
         <td>
-            <a th:href="@{'/galpoes/editar/' + ${g.id}}">Editar</a>
-            <a th:href="@{'/galpoes/excluir/' + ${g.id}}">Excluir</a>
+            <a th:href="@{'/galpoes-view/editar/' + ${g.id}}">Editar</a>
+            <a th:href="@{'/galpoes-view/excluir/' + ${g.id}}">Excluir</a>
         </td>
     </tr>
     </tbody>
 </table>
 
-<a th:href="@{/galpoes/adicionar}" class="btn-adicionar">Adicionar Novo Galpão</a>
+<a th:href="@{/galpoes-view/adicionar}" class="btn-adicionar">Adicionar Novo Galpão</a>
 </body>
 </html>

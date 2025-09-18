@@ -17,7 +17,8 @@ public class Moto {
     @Enumerated(EnumType.STRING)
     private ModeloMoto modelo = ModeloMoto.MOTTU_POP;
 
-    private Integer ano;
+    @Enumerated(EnumType.STRING)
+    private AnoMoto ano = AnoMoto.ANO_2016;
 
     @Enumerated(EnumType.STRING)
     private StatusMoto status = StatusMoto.DISPONIVEL;
@@ -25,6 +26,8 @@ public class Moto {
     private LocalDateTime dataSaida;
 
     private LocalDateTime dataRetorno;
+
+    private boolean emManutencao;
 
     @ManyToOne
     @JoinColumn(name = "motoboy_id")
@@ -58,11 +61,11 @@ public class Moto {
         this.modelo = modelo;
     }
 
-    public Integer getAno() {
+    public AnoMoto getAno() {
         return ano;
     }
 
-    public void setAno(Integer ano) {
+    public void setAno(AnoMoto ano) {
         this.ano = ano;
     }
 
@@ -104,6 +107,12 @@ public class Moto {
 
     public void setGalpao(Galpao galpao) {
         this.galpao = galpao;
+    }
+
+    public boolean isEmManutencao() {return emManutencao;}
+
+    public void setEmManutencao(boolean emManutencao) {
+        this.emManutencao = emManutencao;
     }
 
     public void atribuirMotoqueiroEmUmaMoto(Motoqueiro motoqueiro) {

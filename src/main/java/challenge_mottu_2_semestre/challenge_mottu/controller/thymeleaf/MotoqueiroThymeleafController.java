@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/motoqueiros")
+@RequestMapping("/motoqueiros-view")
 public class MotoqueiroThymeleafController {
 
         @Autowired
@@ -24,7 +24,7 @@ public class MotoqueiroThymeleafController {
 
         // LISTAR GALPÕES
         @GetMapping("/todos")
-        public String listarmMotoqueiros(Model model) {
+        public String listarMotoqueiros(Model model) {
             List<Motoqueiro> motoqueiros = motoqueiroRepository.findAll();
             model.addAttribute("motoqueiros", motoqueiros);
 
@@ -65,7 +65,7 @@ public class MotoqueiroThymeleafController {
                 return "motoqueiro/editar";
             } else {
                 model.addAttribute("mensagem", "Galpão não encontrado.");
-                return "redirect:/motoqueiros/todos";
+                return "redirect:/motoqueiros-view/todos";
             }
         }
 
@@ -81,7 +81,7 @@ public class MotoqueiroThymeleafController {
             } else {
                 model.addAttribute("mensagem", "Motoqueiro não encontrado.");
             }
-            return "redirect:/motoqueiros/todos";
+            return "redirect:/motoqueiros-view/todos";
         }
 
         // MOSTRAR FORMULÁRIO EXCLUIR
@@ -93,7 +93,7 @@ public class MotoqueiroThymeleafController {
                 return "motoqueiro/excluir";
             } else {
                 model.addAttribute("mensagem", "Motoqueiro não encontrado.");
-                return "redirect:/motoqueiros/todos";
+                return "redirect:/motoqueiros-view/todos";
             }
         }
 
@@ -107,6 +107,6 @@ public class MotoqueiroThymeleafController {
             } else {
                 model.addAttribute("mensagem", "Motoqueiro não encontrado.");
             }
-            return "redirect:/motoqueiros/todos";
+            return "redirect:/motoqueiros-view/todos";
         }
     }

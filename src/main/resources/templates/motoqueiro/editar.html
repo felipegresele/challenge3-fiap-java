@@ -56,7 +56,7 @@
 <body>
 <h2>Editar Motoqueiro</h2>
 
-<form th:action="@{'/motoqueiros/editar/' + ${motoqueiro.id}}" method="post">
+<form th:action="@{'/motoqueiros-view/editar/' + ${motoqueiro.id}}" method="post">
     <input type="hidden" name="_method" value="put" />
 
     <label>Nome Completo:</label>
@@ -74,6 +74,6 @@
     <button type="submit">Atualizar</button>
 </form>
 
-<a th:href="@{/motoqueiros/todos}">Voltar para a lista</a>
+<a th:href="@{/motoqueiros-view/todos}">Voltar para a lista</a>
 </body>
 </html>

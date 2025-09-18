@@ -7,105 +7,102 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
-@RequestMapping("/galpoes")
+@Controller("galpaoThymeleafViewController") // Nome único do bean
+@RequestMapping("/galpoes-view")
 public class GalpaoThymeleafController {
 
-        @Autowired
-        private GalpaoRepository galpaoRepository;
+    @Autowired
+    private GalpaoRepository galpaoRepository;
 
-        // LISTAR GALPÕES
-        @GetMapping("/todos")
-        public String listarGalpoes(Model model) {
-            List<Galpao> galpoes = galpaoRepository.findAll();
-            model.addAttribute("galpoes", galpoes);
+    // LISTAR GALPÕES
+    @GetMapping("/todos")
+    public String listarGalpoes(Model model) {
+        List<Galpao> galpoes = galpaoRepository.findAll();
+        model.addAttribute("galpoes", galpoes);
 
-            if (galpoes.isEmpty()) {
-                model.addAttribute("mensagem", "Nenhum galpão cadastrado.");
-            }
-
-            return "galpao/listar";
+        if (galpoes.isEmpty()) {
+            model.addAttribute("mensagem", "Nenhum galpão cadastrado.");
         }
 
-        // MOSTRAR FORMULÁRIO ADICIONAR
-        @GetMapping("/adicionar")
-        public String mostrarFormularioAdicionar() {
-            return "galpao/adicionar";
-        }
+        return "galpao/listar";
+    }
 
-        // ADICIONAR GALPÃO
-        @PostMapping("/adicionar")
-        public String adicionarGalpao(GalpaoDTO dto, Model model) {
-            Galpao galpao = new Galpao();
-            galpao.setNome(dto.getNome());
-            galpao.setEndereco(dto.getEndereco());
-            galpao.setCapacidade(dto.getCapacidade());
+    // MOSTRAR FORMULÁRIO ADICIONAR
+    @GetMapping("/adicionar")
+    public String mostrarFormularioAdicionar() {
+        return "galpao/adicionar";
+    }
 
-            galpaoRepository.save(galpao);
-            model.addAttribute("mensagem", "Galpão cadastrado com sucesso!");
+    // ADICIONAR GALPÃO
+    @PostMapping("/adicionar")
+    public String adicionarGalpao(GalpaoDTO dto, Model model) {
+        Galpao galpao = new Galpao();
+        galpao.setNome(dto.getNome());
+        galpao.setEndereco(dto.getEndereco());
+        galpao.setCapacidade(dto.getCapacidade());
 
-            return "galpao/adicionar";
-        }
+        galpaoRepository.save(galpao);
+        model.addAttribute("mensagem", "Galpão cadastrado com sucesso!");
 
-        // MOSTRAR FORMULÁRIO EDITAR
-        @GetMapping("/editar/{id}")
-        public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
-            Optional<Galpao> galpao = galpaoRepository.findById(id);
-            if (galpao.isPresent()) {
-                model.addAttribute("galpao", galpao.get());
-                return "galpao/editar";
-            } else {
-                model.addAttribute("mensagem", "Galpão não encontrado.");
-                return "redirect:/galpoes/todos";
-            }
-        }
+        return "galpao/adicionar";
+    }
 
-        // EDITAR GALPÃO
-        @PostMapping("/editar/{id}")
-        public String editarGalpao(@PathVariable Long id, GalpaoDTO dto, Model model) {
-            Optional<Galpao> galpaoOptional = galpaoRepository.findById(id);
-            if (galpaoOptional.isPresent()) {
-                Galpao galpao = galpaoOptional.get();
-                BeanUtils.copyProperties(dto, galpao);
-                galpaoRepository.save(galpao);
-                model.addAttribute("mensagem", "Galpão atualizado com sucesso!");
-            } else {
-                model.addAttribute("mensagem", "Galpão não encontrado.");
-            }
-            return "redirect:/galpoes/todos";
-        }
-
-        // MOSTRAR FORMULÁRIO EXCLUIR
-        @GetMapping("/excluir/{id}")
-        public String mostrarFormularioExcluir(@PathVariable Long id, Model model) {
-            Optional<Galpao> galpao = galpaoRepository.findById(id);
-            if (galpao.isPresent()) {
-                model.addAttribute("galpao", galpao.get());
-                return "galpao/excluir";
-            } else {
-                model.addAttribute("mensagem", "Galpão não encontrado.");
-                return "redirect:/galpoes/todos";
-            }
-        }
-
-        // EXCLUIR GALPÃO
-        @PostMapping("/excluir/{id}")
-        public String excluirGalpao(@PathVariable Long id, Model model) {
-            Optional<Galpao> galpao = galpaoRepository.findById(id);
-            if (galpao.isPresent()) {
-                galpaoRepository.delete(galpao.get());
-                model.addAttribute("mensagem", "Galpão excluído com sucesso!");
-            } else {
-                model.addAttribute("mensagem", "Galpão não encontrado.");
-            }
-            return "redirect:/galpoes/todos";
+    // MOSTRAR FORMULÁRIO EDITAR
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+        Optional<Galpao> galpao = galpaoRepository.findById(id);
+        if (galpao.isPresent()) {
+            model.addAttribute("galpao", galpao.get());
+            return "galpao/editar";
+        } else {
+            model.addAttribute("mensagem", "Galpão não encontrado.");
+            return "redirect:/galpoes-view/todos";
         }
     }
+
+    // EDITAR GALPÃO
+    @PostMapping("/editar/{id}")
+    public String editarGalpao(@PathVariable Long id, GalpaoDTO dto, Model model) {
+        Optional<Galpao> galpaoOptional = galpaoRepository.findById(id);
+        if (galpaoOptional.isPresent()) {
+            Galpao galpao = galpaoOptional.get();
+            BeanUtils.copyProperties(dto, galpao);
+            galpaoRepository.save(galpao);
+            model.addAttribute("mensagem", "Galpão atualizado com sucesso!");
+        } else {
+            model.addAttribute("mensagem", "Galpão não encontrado.");
+        }
+        return "redirect:/galpoes-view/todos";
+    }
+
+    // MOSTRAR FORMULÁRIO EXCLUIR
+    @GetMapping("/excluir/{id}")
+    public String mostrarFormularioExcluir(@PathVariable Long id, Model model) {
+        Optional<Galpao> galpao = galpaoRepository.findById(id);
+        if (galpao.isPresent()) {
+            model.addAttribute("galpao", galpao.get());
+            return "galpao/excluir";
+        } else {
+            model.addAttribute("mensagem", "Galpão não encontrado.");
+            return "redirect:/galpoes-view/todos";
+        }
+    }
+
+    // EXCLUIR GALPÃO
+    @PostMapping("/excluir/{id}")
+    public String excluirGalpao(@PathVariable Long id, Model model) {
+        Optional<Galpao> galpao = galpaoRepository.findById(id);
+        if (galpao.isPresent()) {
+            galpaoRepository.delete(galpao.get());
+            model.addAttribute("mensagem", "Galpão excluído com sucesso!");
+        } else {
+            model.addAttribute("mensagem", "Galpão não encontrado.");
+        }
+        return "redirect:/galpoes-view/todos";
+    }
+}

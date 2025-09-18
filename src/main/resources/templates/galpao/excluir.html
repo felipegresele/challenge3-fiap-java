@@ -54,11 +54,11 @@
 <h2>Excluir Galpão</h2>
 <p>Tem certeza que deseja excluir o galpão <strong th:text="${galpao.nome}"></strong>?</p>
 
-<form th:action="@{'/galpoes/excluir/' + ${galpao.id}}" method="post">
+<form th:action="@{'/galpoes-view/excluir/' + ${galpao.id}}" method="post">
     <input type="hidden" name="_method" value="delete" />
     <button type="submit">Confirmar</button>
 </form>
 
-<a th:href="@{/galpoes/todos}">Cancelar</a>
+<a th:href="@{/galpoes-view/todos}">Cancelar</a>
 </body>
 </html>

@@ -54,9 +54,9 @@
     </style>
 </head>
 <body>
-<h2>Editar Galpão</h2>
+<h2>Editar Manutenção</h2>
 
-<form th:action="@{'/galpoes/editar/' + ${galpao.id}}" method="post">
+<form th:action="@{'/manutencoes-view/editar/' + ${galpao.id}}" method="post">
     <input type="hidden" name="_method" value="put" />
 
     <label>Descrição:</label>
@@ -75,7 +75,12 @@
     <label>Data de Fechamento:</label>
     <input type="datetime-local" th:field="*{dataFechamento}" />
 
-    <div><h1>Se o serviço de manutencao ainda não foi finalizado não preencha nada no campo acima</h1></div>
+    <div><p>Se o serviço de manutencao ainda não foi finalizado não preencha nada no campo acima</p></div>
+
+    <label>Moto:</label>
+    <select th:field="*{motoId}">
+        <option th:each="moto : ${motos}" th:value="${moto.id}" th:text="${moto.placa}">Moto</option>
+    </select>
 
     <label>Em andamento:</label>
     <input type="checkbox" th:field="*{emAndamento}" />
@@ -83,6 +88,6 @@
     <button type="submit">Atualizar</button>
 </form>
 
-<a th:href="@{/manutencoes/todos}">Voltar para a lista</a>
+<a th:href="@{/manutencoes-view/todos}">Voltar para a lista</a>
 </body>
 </html>

@@ -77,6 +77,7 @@
         <th>Data Abertura</th>
         <th>Data Fechamento</th>
         <th>Em Andamento</th>
+        <th>Moto</th>
         <th>Ações</th>
     </tr>
     </thead>
@@ -87,15 +88,16 @@
         <td th:text="${g.prioridadeManutencao}"></td>
         <td th:text="${g.dataAbertura}"></td>
         <td th:text="${g.dataFechamento != null ? #dates.format(g.dataFechamento, 'yyyy-MM-dd HH:mm') : 'Ainda não finalizado'}"></td>
+        <td th:text="{g.moto != null ? g.moto.placa : 'Sem Moto'"></td>
         <td th:text="${g.emAndamento}"></td>
         <td>
-            <a th:href="@{'/manutencoes/editar/' + ${g.id}}">Editar</a>
-            <a th:href="@{'/manutencoes/excluir/' + ${g.id}}">Excluir</a>
+            <a th:href="@{'/manutencoes-view/editar/' + ${g.id}}">Editar</a>
+            <a th:href="@{'/manutencoes-view/excluir/' + ${g.id}}">Excluir</a>
         </td>
     </tr>
     </tbody>
 </table>
 
-<a th:href="@{/manutencoes/adicionar}" class="btn-adicionar">Adicionar Novo Manutenção</a>
+<a th:href="@{/manutencoes-view/adicionar}" class="btn-adicionar">Adicionar Novo Manutenção</a>
 </body>
 </html>

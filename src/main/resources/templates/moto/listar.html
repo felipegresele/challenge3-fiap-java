@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Motos</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #121212; color: #fff; margin: 0; padding: 20px; }
+        h2 { color: #00ff7f; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #00ff7f; padding: 10px; text-align: left; }
+        th { background-color: #00ff7f; color: #000; }
+        a { color: #00ff7f; text-decoration: none; margin-right: 10px; font-weight: bold; }
+        a:hover { color: #00cc66; }
+        .mensagem { margin: 15px 0; font-weight: bold; color: #00ff7f; }
+        .btn-adicionar { display: inline-block; margin-top: 15px; padding: 8px 16px; background: #00ff7f; color: #000; font-weight: bold; text-decoration: none; border-radius: 5px; }
+        .btn-adicionar:hover { background: #00cc66; }
+        .btn-voltar { background-color: #00ff7f; padding: 5px; font-weight: bold; color: #fff; }
+    </style>
+</head>
+<body>
+<a th:href="@{/dashboard}" class="btn-voltar">Voltar ao dashboard</a>
+<h2>Lista de Motos</h2>
+
+<p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
+
+<table th:if="${motos}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Placa</th>
+        <th>Modelo</th>
+        <th>Ano</th>
+        <th>Status</th>
+        <th>Galpão</th>
+        <th>Em Manutenção</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="m : ${motos}">
+        <td th:text="${m.id}"></td>
+        <td th:text="${m.placa}"></td>
+        <td th:text="${m.modelo}"></td>
+        <td th:text="${m.ano}"></td>
+        <td th:text="${m.status}"></td>
+        <td th:text="${m.galpao.nome}"></td>
+        <td th:text="${m.emManutencao} ? 'Sim' : 'Não'"></td>
+        <td>
+            <a th:href="@{'/motos-view/editar/' + ${m.id}}">Editar</a>
+            <a th:href="@{'/motos-view/excluir/' + ${m.id}}">Excluir</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/motos-view/adicionar}" class="btn-adicionar">Adicionar Nova Moto</a>
+</body>
+</html>
