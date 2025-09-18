@@ -1,7 +1,7 @@
 package challenge_mottu_2_semestre.challenge_mottu.controller.thymeleaf;
 
-import challenge_mottu_2_semestre.challenge_mottu.model.DTO.GalpaoDTO;
 import challenge_mottu_2_semestre.challenge_mottu.model.Galpao;
+import challenge_mottu_2_semestre.challenge_mottu.model.DTO.GalpaoDTO;
 import challenge_mottu_2_semestre.challenge_mottu.repository.GalpaoRepository;
 import challenge_mottu_2_semestre.challenge_mottu.repository.MotoRepository;
 import org.springframework.beans.BeanUtils;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@Controller("galpaoThymeleafViewController") // Nome único do bean
+@Controller
 @RequestMapping("/galpoes-view")
 public class GalpaoThymeleafController {
 
@@ -52,7 +52,6 @@ public class GalpaoThymeleafController {
 
         galpaoRepository.save(galpao);
         model.addAttribute("mensagem", "Galpão cadastrado com sucesso!");
-
         return "galpao/adicionar";
     }
 
@@ -85,6 +84,20 @@ public class GalpaoThymeleafController {
     }
 
     // MOSTRAR FORMULÁRIO EXCLUIR
+    @GetMapping("/excluir/{id}")
+    public String mostrarFormularioExcluir(@PathVariable Long id, Model model) {
+        Optional<Galpao> galpaoOpt = galpaoRepository.findById(id);
+
+        if (galpaoOpt.isEmpty()) {
+            model.addAttribute("mensagemErro", "Galpão não encontrado.");
+            return "redirect:/galpoes-view/todos";
+        }
+
+        model.addAttribute("galpao", galpaoOpt.get());
+        return "galpao/excluir"; // página de confirmação
+    }
+
+    // EXECUTAR EXCLUSÃO
     @PostMapping("/excluir/{id}")
     public String excluirGalpao(@PathVariable Long id, Model model) {
         Optional<Galpao> galpaoOpt = galpaoRepository.findById(id);
@@ -93,11 +106,10 @@ public class GalpaoThymeleafController {
             boolean existeMoto = motoRepository.existsByGalpaoId(id);
 
             if (existeMoto) {
-                // Exibe mensagem de erro na tela
                 model.addAttribute("mensagemErro",
                         "Não é possível excluir. Existem motos vinculadas a este galpão.");
                 model.addAttribute("galpao", galpaoOpt.get());
-                return "galpao/excluir"; // página de confirmação/exclusão
+                return "galpao/excluir";
             }
 
             galpaoRepository.delete(galpaoOpt.get());

@@ -22,72 +22,53 @@ public class ManutencaoService {
     @Autowired
     private MotoRepository motoRepository;
 
-    // Listar todas as manutenções
     public List<Manutencao> listarTodos() {
         return manutencaoRepository.findAll();
     }
 
-    // Salvar uma nova manutenção
     public Manutencao salvar(ManutencaoDTO dto) {
         Manutencao manutencao = new Manutencao();
-        BeanUtils.copyProperties(dto, manutencao);
-
+        BeanUtils.copyProperties(dto, manutencao, "moto"); // ignorando moto
         if (dto.getMotoId() != null) {
-            Optional<Moto> motoOpt = motoRepository.findById(dto.getMotoId());
-            motoOpt.ifPresent(m -> {
-                manutencao.setMoto(m);
-                m.setEmManutencao(true); // marca a moto como em manutenção
-                m.setStatus(StatusMoto.MANUTENCAO);
-                motoRepository.save(m);
-            });
+            Moto moto = motoRepository.findById(dto.getMotoId())
+                    .orElseThrow(() -> new IllegalArgumentException("Moto não encontrada"));
+            manutencao.setMoto(moto);
+            moto.setEmManutencao(true);
+            moto.setStatus(StatusMoto.MANUTENCAO);
+            motoRepository.save(moto);
         }
-
         return manutencaoRepository.save(manutencao);
     }
 
-    // Atualizar manutenção existente
     public Manutencao atualizar(Long id, ManutencaoDTO dto) {
-        Optional<Manutencao> manutencaoOpt = manutencaoRepository.findById(id);
-        if (manutencaoOpt.isEmpty()) {
-            throw new IllegalArgumentException("Manutenção não encontrada");
-        }
-
-        Manutencao manutencao = manutencaoOpt.get();
-        BeanUtils.copyProperties(dto, manutencao);
-
+        Manutencao manutencao = manutencaoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Manutenção não encontrada"));
+        BeanUtils.copyProperties(dto, manutencao, "moto"); // ignorando moto
         if (dto.getMotoId() != null) {
-            Optional<Moto> motoOpt = motoRepository.findById(dto.getMotoId());
-            motoOpt.ifPresent(m -> {
-                manutencao.setMoto(m);
-                // atualiza o status da moto de acordo com a manutenção
-                m.setEmManutencao(true);
-                m.setStatus(StatusMoto.MANUTENCAO);
-                motoRepository.save(m);
-            });
+            Moto moto = motoRepository.findById(dto.getMotoId())
+                    .orElseThrow(() -> new IllegalArgumentException("Moto não encontrada"));
+            manutencao.setMoto(moto);
+            moto.setEmManutencao(true);
+            moto.setStatus(StatusMoto.MANUTENCAO);
+            motoRepository.save(moto);
+        } else {
+            manutencao.setMoto(null);
         }
-
         return manutencaoRepository.save(manutencao);
     }
 
-    // Deletar manutenção
     public void deletar(Long id) {
-        Optional<Manutencao> manutencaoOpt = manutencaoRepository.findById(id);
-        if (manutencaoOpt.isEmpty()) {
-            throw new IllegalArgumentException("Manutenção não encontrada");
-        }
-
-        Manutencao manutencao = manutencaoOpt.get();
+        Manutencao manutencao = manutencaoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Manutenção não encontrada"));
         Moto moto = manutencao.getMoto();
         if (moto != null) {
-            moto.setEmManutencao(false); // libera a moto
+            moto.setEmManutencao(false);
             moto.setStatus(StatusMoto.DISPONIVEL);
             motoRepository.save(moto);
         }
-
         manutencaoRepository.delete(manutencao);
     }
 
-    // Buscar manutenção por ID
     public Optional<Manutencao> buscarPorId(Long id) {
         return manutencaoRepository.findById(id);
     }

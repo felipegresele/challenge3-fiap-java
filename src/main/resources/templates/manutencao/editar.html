@@ -56,7 +56,7 @@
 <body>
 <h2>Editar Manutenção</h2>
 
-<form th:action="@{'/manutencoes-view/editar/' + ${galpao.id}}" method="post">
+<form th:action="@{'/manutencoes-view/editar/' + ${manutencaoDTO.id}}" method="post">
     <input type="hidden" name="_method" value="put" />
 
     <label>Descrição:</label>

@@ -5,8 +5,11 @@ import challenge_mottu_2_semestre.challenge_mottu.model.Motoqueiro;
 import challenge_mottu_2_semestre.challenge_mottu.model.StatusMoto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface MotoRepository extends JpaRepository<Moto, Long> {
     boolean existsByMotoboyEmUsoId(Long id);
     boolean existsByGalpaoId(Long galpaoId);
     boolean existsByMotoboyEmUsoAndStatus(Motoqueiro motoqueiro, StatusMoto status);
+    List<Moto> findByStatusIn(List<StatusMoto> status);
 }

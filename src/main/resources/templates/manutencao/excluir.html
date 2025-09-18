@@ -52,7 +52,7 @@
 </head>
 <body>
 <h2>Excluir Manutenção</h2>
-<p>Tem certeza que deseja excluir o manutencão<strong th:text="${manutencao.descricao}"></strong>?</p>
+<p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
 
 <form th:action="@{'/manutencoes-view/excluir/' + ${manutencao.id}}" method="post">
     <input type="hidden" name="_method" value="delete" />
