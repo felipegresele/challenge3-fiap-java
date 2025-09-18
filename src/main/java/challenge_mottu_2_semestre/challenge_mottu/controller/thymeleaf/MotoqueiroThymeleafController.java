@@ -2,6 +2,7 @@ package challenge_mottu_2_semestre.challenge_mottu.controller.thymeleaf;
 
 import challenge_mottu_2_semestre.challenge_mottu.model.DTO.MotoqueiroDTO;
 import challenge_mottu_2_semestre.challenge_mottu.model.Motoqueiro;
+import challenge_mottu_2_semestre.challenge_mottu.repository.MotoRepository;
 import challenge_mottu_2_semestre.challenge_mottu.repository.MotoqueiroRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class MotoqueiroThymeleafController {
 
         @Autowired
         private MotoqueiroRepository motoqueiroRepository;
+
+        @Autowired
+        private MotoRepository motoRepository;
 
         // LISTAR GALPÕES
         @GetMapping("/todos")
@@ -100,13 +104,24 @@ public class MotoqueiroThymeleafController {
         // EXCLUIR GALPÃO
         @PostMapping("/excluir/{id}")
         public String excluirMotoqueiro(@PathVariable Long id, Model model) {
-            Optional<Motoqueiro> motoqueiro = motoqueiroRepository.findById(id);
-            if (motoqueiro.isPresent()) {
-                motoqueiroRepository.delete(motoqueiro.get());
-                model.addAttribute("mensagem", "Motoqueiro excluído com sucesso!");
+            Optional<Motoqueiro> motoqueiroOpt = motoqueiroRepository.findById(id);
+
+            if (motoqueiroOpt.isPresent()) {
+                boolean existeMoto = motoRepository.existsByMotoboyEmUsoId(id);
+
+                if (existeMoto) {
+                    model.addAttribute("motoqueiro", motoqueiroOpt.get());
+                    model.addAttribute("mensagemErro",
+                            "Não é possível excluir. O motoqueiro está vinculado a uma ou mais motos.");
+                    return "motoqueiro/excluir";
+                }
+
+                motoqueiroRepository.delete(motoqueiroOpt.get());
+                model.addAttribute("mensagemSucesso", "Motoqueiro excluído com sucesso!");
+                return "redirect:/motoqueiros-view/todos";
             } else {
-                model.addAttribute("mensagem", "Motoqueiro não encontrado.");
+                model.addAttribute("mensagemErro", "Motoqueiro não encontrado.");
+                return "redirect:/motoqueiros-view/todos";
             }
-            return "redirect:/motoqueiros-view/todos";
         }
     }

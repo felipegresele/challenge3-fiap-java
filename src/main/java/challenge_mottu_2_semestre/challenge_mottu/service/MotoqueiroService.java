@@ -3,6 +3,7 @@ package challenge_mottu_2_semestre.challenge_mottu.service;
 import challenge_mottu_2_semestre.challenge_mottu.model.DTO.MotoqueiroDTO;
 import challenge_mottu_2_semestre.challenge_mottu.model.Moto;
 import challenge_mottu_2_semestre.challenge_mottu.model.Motoqueiro;
+import challenge_mottu_2_semestre.challenge_mottu.repository.MotoRepository;
 import challenge_mottu_2_semestre.challenge_mottu.repository.MotoqueiroRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import java.util.Optional;
 
 @Service
 public class MotoqueiroService {
+
+    @Autowired
+    private MotoRepository motoRepository;
 
     @Autowired
     private MotoqueiroRepository motoqueiroRepository;
@@ -42,10 +46,19 @@ public class MotoqueiroService {
 
     public boolean excluir(Long id) {
         Optional<Motoqueiro> motoqueiroOpt = motoqueiroRepository.findById(id);
-        if (motoqueiroOpt.isPresent()) {
-            motoqueiroRepository.delete(motoqueiroOpt.get());
-            return true;
+
+        if (motoqueiroOpt.isEmpty()) {
+            return false;
         }
-        return false;
+
+        boolean emUso = motoRepository.existsByMotoboyEmUsoId(id);
+        if (emUso) {
+            throw new IllegalStateException("Impossível excluir: Motoqueiro está sendo usado em uma moto.");
+        }
+
+        // Só deleta se não estiver em uso
+        motoqueiroRepository.delete(motoqueiroOpt.get());
+        return true;
     }
+
 }

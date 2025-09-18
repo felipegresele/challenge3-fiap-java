@@ -2,7 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Motoqueiros</title>
+    <title>Excluir Motoqueiro</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,38 +12,30 @@
             padding: 20px;
         }
         h2 {
+            color: #ff5555;
+        }
+        p {
+            margin: 20px 0;
+        }
+        strong {
             color: #00ff7f;
         }
-        form {
-            margin-top: 20px;
-            max-width: 400px;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            border-radius: 5px;
-            border: none;
-        }
         button {
-            margin-top: 15px;
+            margin-top: 10px;
             padding: 8px 16px;
-            background: #00ff7f;
-            color: #000;
+            background: #ff5555;
+            color: #fff;
             font-weight: bold;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
         button:hover {
-            background: #00cc66;
+            background: #cc4444;
         }
         a {
             display: inline-block;
-            margin-top: 15px;
+            margin-top: 10px;
             color: #00ff7f;
             text-decoration: none;
             font-weight: bold;
@@ -51,29 +43,21 @@
         a:hover {
             color: #00cc66;
         }
+        .link-cancelar {
+            color: #fff;
+            padding: 2px;
+            background-color: red;
+        }
     </style>
 </head>
 <body>
-<h2>Editar Motoqueiro</h2>
+<h2>Excluir Motoqueiro</h2>
+<p>Tem certeza que deseja excluir o motoqueiro <strong th:text="${motoqueiro.nomeCompleto}"></strong>?</p>
 
-<form th:action="@{'/motoqueiros-view/editar/' + ${motoqueiro.id}}" method="post">
-    <input type="hidden" name="_method" value="put" />
-
-    <label>Nome Completo:</label>
-    <input type="text" name="nomeCompleto" th:value="${motoqueiro.nomeCompleto}" required>
-
-    <label>CPF:</label>
-    <input type="text" name="cpf" th:value="${motoqueiro.cpf}" required>
-
-    <label>Telefone:</label>
-    <input type="text" name="telefone" th:value="${motoqueiro.telefone}" required>
-
-    <label>Ativo:</label>
-    <input type="checkbox" name="ativo" th:value="${motoqueiro.ativo}">
-
-    <button type="submit">Atualizar</button>
+<form th:action="@{/motoqueiros-view/excluir/{id}(id=${motoqueiro.id})}" method="post">
+    <button type="submit">Confirmar</button>
 </form>
 
-<a th:href="@{/motoqueiros-view/todos}">Voltar para a lista</a>
+<a th:href="@{/motoqueiros-view/todos}">Cancelar</a>
 </body>
 </html>

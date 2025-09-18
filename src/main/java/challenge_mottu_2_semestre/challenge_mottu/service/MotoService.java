@@ -3,6 +3,7 @@ package challenge_mottu_2_semestre.challenge_mottu.service;
 import challenge_mottu_2_semestre.challenge_mottu.model.DTO.MotoDTO;
 import challenge_mottu_2_semestre.challenge_mottu.model.Galpao;
 import challenge_mottu_2_semestre.challenge_mottu.model.Moto;
+import challenge_mottu_2_semestre.challenge_mottu.model.Motoqueiro;
 import challenge_mottu_2_semestre.challenge_mottu.model.StatusMoto;
 import challenge_mottu_2_semestre.challenge_mottu.repository.GalpaoRepository;
 import challenge_mottu_2_semestre.challenge_mottu.repository.MotoRepository;
@@ -35,14 +36,21 @@ public class MotoService {
         Moto moto = new Moto();
         BeanUtils.copyProperties(dto, moto);
 
+        // Galpão
         if (dto.getGalpaoId() != null) {
-            Optional<Galpao> galpao = galpaoRepository.findById(dto.getGalpaoId());
-            if (galpao.isEmpty()) throw new Exception("Moto não encontrado");
-            moto.setGalpao(galpao.get());
+            Galpao galpao = galpaoRepository.findById(dto.getGalpaoId())
+                    .orElseThrow(() -> new Exception("Galpão não encontrado"));
+            moto.setGalpao(galpao);
         }
 
-        if (dto.getMotoboyEmUso() != null) {
-            moto.setMotoboyEmUso(dto.getMotoboyEmUso());
+        // Motoqueiro
+        if (dto.getStatus() == StatusMoto.TRANSITO) {
+            if (dto.getMotoboyId() == null) throw new Exception("Moto em trânsito precisa ter um motoqueiro!");
+            Motoqueiro motoqueiro = motoqueiroRepository.findById(dto.getMotoboyId())
+                    .orElseThrow(() -> new Exception("Motoqueiro não encontrado"));
+            moto.setMotoboyEmUso(motoqueiro);
+        } else {
+            moto.setMotoboyEmUso(null);
         }
 
         validarStatusEHorarios(moto);
@@ -51,18 +59,22 @@ public class MotoService {
     }
 
     public Moto editar(Long id, MotoDTO dto) throws Exception {
-        Optional<Moto> motoOptional = motoRepository.findById(id);
-        if (motoOptional.isEmpty()) throw new Exception("Moto não encontrada");
-
-        Moto moto = motoOptional.get();
+        Moto moto = motoRepository.findById(id).orElseThrow(() -> new Exception("Moto não encontrada"));
         BeanUtils.copyProperties(dto, moto);
 
+        // Galpão
         if (dto.getGalpaoId() != null) {
             galpaoRepository.findById(dto.getGalpaoId()).ifPresent(moto::setGalpao);
         }
 
-        if (dto.getMotoboyEmUso() != null) {
-            moto.setMotoboyEmUso(dto.getMotoboyEmUso());
+        // Motoqueiro
+        if (dto.getStatus() == StatusMoto.TRANSITO) {
+            if (dto.getMotoboyId() == null) throw new Exception("Moto em trânsito precisa ter um motoqueiro!");
+            Motoqueiro motoqueiro = motoqueiroRepository.findById(dto.getMotoboyId())
+                    .orElseThrow(() -> new Exception("Motoqueiro não encontrado"));
+            moto.setMotoboyEmUso(motoqueiro);
+        } else {
+            moto.setMotoboyEmUso(null);
         }
 
         validarStatusEHorarios(moto);
@@ -71,9 +83,8 @@ public class MotoService {
     }
 
     public void excluir(Long id) throws Exception {
-        Optional<Moto> motoOptional = motoRepository.findById(id);
-        if (motoOptional.isEmpty()) throw new Exception("Moto não encontrada");
-        motoRepository.delete(motoOptional.get());
+        Moto moto = motoRepository.findById(id).orElseThrow(() -> new Exception("Moto não encontrada"));
+        motoRepository.delete(moto);
     }
 
     public Optional<Moto> buscarPorId(Long id) {
@@ -90,29 +101,56 @@ public class MotoService {
 
         switch (status) {
             case DISPONIVEL:
-                if (saida != null && saida.isAfter(agora))
-                    throw new Exception("Horário de saída não pode ser maior que o horário atual");
-                if (retorno != null && retorno.isAfter(agora))
-                    throw new Exception("Horário de retorno não pode ser maior que o horário atual");
-                if (saida != null && retorno != null && saida.isAfter(retorno))
-                    throw new Exception("Horário de saída não pode ser maior que o horário de retorno");
-                if (saida != null && retorno != null && retorno.isAfter(saida.plusDays(2)))
-                    throw new Exception("Horário de retorno não pode exceder 2 dias após a saída");
+                // Pode não ter datas
+                if ((saida != null && retorno == null) || (saida == null && retorno != null)) {
+                    throw new Exception("Se uma data for preenchida, ambas devem ser preenchidas.");
+                }
+
+                if (saida != null && saida.isAfter(agora)) {
+                    throw new Exception("Data de saída não pode ser futura.");
+                }
+
+                if (retorno != null && retorno.isAfter(agora)) {
+                    throw new Exception("Data de retorno não pode ser futura.");
+                }
+
+                if (saida != null && retorno != null && saida.isAfter(retorno)) {
+                    throw new Exception("Data de saída deve ser menor que a data de retorno.");
+                }
+
                 moto.setEmManutencao(false);
                 break;
 
             case TRANSITO:
-                if (saida == null) throw new Exception("Moto em trânsito precisa ter horário de saída");
-                if (saida.isAfter(agora)) throw new Exception("Horário de saída não pode ser maior que o horário atual");
-                if (retorno != null) throw new Exception("Moto em trânsito não pode ter horário de retorno");
-                moto.setDataRetorno(null);
+                if (saida == null) {
+                    throw new Exception("Moto em trânsito precisa ter data de saída e retorno.");
+                }
+
+                if (retorno != null ) {
+                    throw new Exception("Data de retorno deve ser vazia, o motoqueiro ainda está em trânsito.");
+                }
+
+                if (saida.isAfter(agora)) {
+                    throw new Exception("Data de saída não pode ser futura.");
+                }
+
+                if (moto.getMotoboyEmUso() != null) {
+                    boolean motoqueiroEmUso = motoRepository.existsByMotoboyEmUsoAndStatus(
+                            moto.getMotoboyEmUso(), StatusMoto.TRANSITO);
+                    if (motoqueiroEmUso) {
+                        throw new Exception("Este motoqueiro já esta em trânsito com outra moto!");
+                    }
+                }
+
                 moto.setEmManutencao(false);
                 break;
 
             case MANUTENCAO:
-                if (saida != null || retorno != null)
-                    throw new Exception("Moto em manutenção não pode ter horários de saída ou retorno");
+                if (saida != null || retorno != null) {
+                    throw new Exception("Moto em manutenção não pode ter datas de saída ou retorno.");
+                }
                 moto.setEmManutencao(true);
+                moto.setMotoboyEmUso(null);
                 break;
 
             default:

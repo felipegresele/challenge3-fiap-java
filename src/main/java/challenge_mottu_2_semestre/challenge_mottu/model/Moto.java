@@ -29,7 +29,7 @@ public class Moto {
 
     private boolean emManutencao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "motoboy_id")
     private Motoqueiro motoboyEmUso;
 

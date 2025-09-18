@@ -3,6 +3,7 @@ package challenge_mottu_2_semestre.challenge_mottu.controller.thymeleaf;
 import challenge_mottu_2_semestre.challenge_mottu.model.DTO.GalpaoDTO;
 import challenge_mottu_2_semestre.challenge_mottu.model.Galpao;
 import challenge_mottu_2_semestre.challenge_mottu.repository.GalpaoRepository;
+import challenge_mottu_2_semestre.challenge_mottu.repository.MotoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ public class GalpaoThymeleafController {
 
     @Autowired
     private GalpaoRepository galpaoRepository;
+
+    @Autowired
+    private MotoRepository motoRepository;
 
     // LISTAR GALPÕES
     @GetMapping("/todos")
@@ -81,28 +85,27 @@ public class GalpaoThymeleafController {
     }
 
     // MOSTRAR FORMULÁRIO EXCLUIR
-    @GetMapping("/excluir/{id}")
-    public String mostrarFormularioExcluir(@PathVariable Long id, Model model) {
-        Optional<Galpao> galpao = galpaoRepository.findById(id);
-        if (galpao.isPresent()) {
-            model.addAttribute("galpao", galpao.get());
-            return "galpao/excluir";
-        } else {
-            model.addAttribute("mensagem", "Galpão não encontrado.");
-            return "redirect:/galpoes-view/todos";
-        }
-    }
-
-    // EXCLUIR GALPÃO
     @PostMapping("/excluir/{id}")
     public String excluirGalpao(@PathVariable Long id, Model model) {
-        Optional<Galpao> galpao = galpaoRepository.findById(id);
-        if (galpao.isPresent()) {
-            galpaoRepository.delete(galpao.get());
-            model.addAttribute("mensagem", "Galpão excluído com sucesso!");
+        Optional<Galpao> galpaoOpt = galpaoRepository.findById(id);
+
+        if (galpaoOpt.isPresent()) {
+            boolean existeMoto = motoRepository.existsByGalpaoId(id);
+
+            if (existeMoto) {
+                // Exibe mensagem de erro na tela
+                model.addAttribute("mensagemErro",
+                        "Não é possível excluir. Existem motos vinculadas a este galpão.");
+                model.addAttribute("galpao", galpaoOpt.get());
+                return "galpao/excluir"; // página de confirmação/exclusão
+            }
+
+            galpaoRepository.delete(galpaoOpt.get());
+            model.addAttribute("mensagemSucesso", "Galpão excluído com sucesso!");
         } else {
-            model.addAttribute("mensagem", "Galpão não encontrado.");
+            model.addAttribute("mensagemErro", "Galpão não encontrado.");
         }
+
         return "redirect:/galpoes-view/todos";
     }
 }

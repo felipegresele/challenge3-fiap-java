@@ -4,6 +4,7 @@ import challenge_mottu_2_semestre.challenge_mottu.model.DTO.MotoDTO;
 import challenge_mottu_2_semestre.challenge_mottu.model.Galpao;
 import challenge_mottu_2_semestre.challenge_mottu.model.Moto;
 import challenge_mottu_2_semestre.challenge_mottu.repository.GalpaoRepository;
+import challenge_mottu_2_semestre.challenge_mottu.repository.MotoqueiroRepository;
 import challenge_mottu_2_semestre.challenge_mottu.service.MotoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class MotoThymeleafController {
 
     @Autowired
     private MotoService motoService;
+
+    @Autowired
+    private MotoqueiroRepository motoqueiroRepository;
 
     @Autowired
     private GalpaoRepository galpaoRepository;
@@ -39,6 +43,7 @@ public class MotoThymeleafController {
         MotoDTO dto = new MotoDTO();
         model.addAttribute("motoDTO", dto);
         model.addAttribute("galpoes", galpaoRepository.findAll());
+        model.addAttribute("motoqueiros", motoqueiroRepository.findAll());
         return "moto/adicionar";
     }
 
@@ -64,7 +69,7 @@ public class MotoThymeleafController {
 
         MotoDTO dto = new MotoDTO();
         BeanUtils.copyProperties(moto.get(), dto);
-
+        dto.setMotoboyId(moto.get().getMotoboyEmUso() != null ? moto.get().getMotoboyEmUso().getId() : null);
         dto.setId(moto.get().getId());
         dto.setEmManutencao(moto.get().isEmManutencao());
         if (moto.get().getGalpao() != null) {
@@ -73,6 +78,7 @@ public class MotoThymeleafController {
 
         model.addAttribute("motoDTO", dto);
         model.addAttribute("galpoes", galpaoRepository.findAll());
+        model.addAttribute("motoqueiros", motoqueiroRepository.findAll()); // todos os motoqueiros
         return "moto/editar";
     }
 

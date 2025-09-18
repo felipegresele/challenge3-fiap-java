@@ -33,6 +33,7 @@
         <th>Status</th>
         <th>Galpão</th>
         <th>Em Manutenção</th>
+        <th>Motoqueiro</th>
         <th>Ações</th>
     </tr>
     </thead>
@@ -43,8 +44,9 @@
         <td th:text="${m.modelo}"></td>
         <td th:text="${m.ano}"></td>
         <td th:text="${m.status}"></td>
-        <td th:text="${m.galpao.nome}"></td>
+        <td th:text="${m.galpao != null ? m.galpao.nome : '-'}"></td>
         <td th:text="${m.emManutencao} ? 'Sim' : 'Não'"></td>
+        <td th:text="${m.motoboyEmUso != null ? m.motoboyEmUso.nomeCompleto + ' (ID: ' + m.motoboyEmUso.id + ')' : '-'}"></td> <!-- Aqui mostramos o nome e ID do motoqueiro -->
         <td>
             <a th:href="@{'/motos-view/editar/' + ${m.id}}">Editar</a>
             <a th:href="@{'/motos-view/excluir/' + ${m.id}}">Excluir</a>

@@ -52,10 +52,18 @@
 </head>
 <body>
 <h2>Excluir Galpão</h2>
+
+<div th:if="${mensagemErro}" style="color: #ff5555; margin-bottom: 10px;">
+    <p th:text="${mensagemErro}"></p>
+</div>
+
+<div th:if="${mensagemSucesso}" style="color: #00ff7f; margin-bottom: 10px;">
+    <p th:text="${mensagemSucesso}"></p>
+</div>
+
 <p>Tem certeza que deseja excluir o galpão <strong th:text="${galpao.nome}"></strong>?</p>
 
 <form th:action="@{'/galpoes-view/excluir/' + ${galpao.id}}" method="post">
-    <input type="hidden" name="_method" value="delete" />
     <button type="submit">Confirmar</button>
 </form>
 
