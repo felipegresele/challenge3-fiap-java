@@ -27,9 +27,7 @@ public class Manutencao {
 
     private boolean emAndamento;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "moto_id", nullable = false)
-    private Moto moto;
+    private String placaMoto;
 
     public Long getId() {
         return id;
@@ -79,12 +77,8 @@ public class Manutencao {
         this.emAndamento = emAndamento;
     }
 
-    public Moto getMoto(){
-        return moto;
-    }
+    public String getPlacaMoto() { return placaMoto; }
 
-    public void setMoto(Moto moto) {
-        this.moto = moto;
-    }
+    public void setPlacaMoto(String placaMoto) { this.placaMoto = placaMoto; }
 
 }

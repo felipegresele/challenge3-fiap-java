@@ -4,58 +4,16 @@
     <meta charset="UTF-8">
     <title>Adicionar Manutenção</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #121212;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-        }
-        h2 {
-            color: #00ff7f;
-        }
-        form {
-            margin-top: 20px;
-            max-width: 400px;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            border-radius: 5px;
-            border: none;
-        }
-        button {
-            margin-top: 15px;
-            padding: 8px 16px;
-            background: #00ff7f;
-            color: #000;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #00cc66;
-        }
-        .mensagem {
-            margin-top: 15px;
-            color: #00ff7f;
-            font-weight: bold;
-        }
-        a {
-            display: inline-block;
-            margin-top: 15px;
-            color: #00ff7f;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        a:hover {
-            color: #00cc66;
-        }
+        body { font-family: Arial; background: #121212; color: #fff; padding: 20px; }
+        h2 { color: #00ff7f; }
+        form { max-width: 400px; margin-top: 20px; }
+        label { display: block; margin-top: 10px; }
+        input, select { width: 100%; padding: 8px; border-radius: 5px; border: none; }
+        button { margin-top: 15px; padding: 8px 16px; background: #00ff7f; color: #000; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #00cc66; }
+        a { display: inline-block; margin-top: 15px; color: #00ff7f; text-decoration: none; font-weight: bold; }
+        a:hover { color: #00cc66; }
+        .mensagem { color: #ff5555; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -64,7 +22,6 @@
 <p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
 
 <form th:action="@{/manutencoes-view/adicionar}" th:object="${manutencaoDTO}" method="post">
-
     <label>Descrição:</label>
     <input type="text" th:field="*{descricao}" required />
 
@@ -76,26 +33,20 @@
     </select>
 
     <label>Data de Abertura:</label>
-    <input type="datetime-local" th:field="*{dataAbertura}" th:value="${dataAberturaFormatada}" required />
-
-    <div th:if="${mensagem != null}" class="erro" th:text="${mensagem}"></div>
+    <input type="datetime-local" th:field="*{dataAbertura}" required />
 
     <label>Data de Fechamento:</label>
-    <input type="datetime-local" th:field="*{dataFechamento}" th:value="${dataFechamentoFormatada}" />
-
-    <div><p>Se o serviço de manutencao ainda não foi finalizado não preencha nada no campo acima</p></div>
-
-    <label>Moto:</label>
-    <select th:field="*{motoId}">
-        <option th:each="moto : ${motos}" th:value="${moto.id}" th:text="${moto.placa}">Moto</option>
-    </select>
+    <input type="datetime-local" th:field="*{dataFechamento}" />
 
     <label>Em andamento:</label>
-    <input type="checkbox" th:field="*{emAndamento}" />
+    <input type="checkbox" th:field="*{emAndamento}" th:disabled="${manutencaoDTO.dataFechamento != null}" />
+
+    <label>Placa da Moto:</label>
+    <input type="text" th:field="*{placaMoto}" placeholder="Ex: ABC-1234" maxlength="7" minlength="7" title="A placa deve ter 7 caracteres"/>
 
     <button type="submit">Salvar</button>
 </form>
 
-<a th:href="@{/manutencoes/todos}">Voltar para a lista</a>
+<a th:href="@{/manutencoes-view/todos}">Voltar para a lista</a>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Lista de Manutenções</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #121212; color: #fff; margin: 0; padding: 20px; }
+        body { font-family: Arial; background: #121212; color: #fff; margin: 0; padding: 20px; }
         h2 { color: #00ff7f; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #00ff7f; padding: 10px; text-align: left; }
@@ -14,7 +14,12 @@
         .mensagem { margin: 15px 0; font-weight: bold; color: #00ff7f; }
         .btn-adicionar { display: inline-block; margin-top: 15px; padding: 8px 16px; background: #00ff7f; color: #000; font-weight: bold; text-decoration: none; border-radius: 5px; }
         .btn-adicionar:hover { background: #00cc66; }
-        .btn-voltar { background-color: #00ff7f; padding: 5px; font-weight: bold; color: #fff; text-decoration: none; border-radius: 5px; }
+        .btn-voltar {
+            background-color: #00ff7f;
+            padding: 5px;
+            font-weight: bold;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -23,37 +28,31 @@
 
 <p th:if="${mensagem}" th:text="${mensagem}" class="mensagem"></p>
 
-<table th:if="${manutencoes != null and !manutencoes.isEmpty()}">
+<table th:if="${manutencoes}">
     <thead>
     <tr>
         <th>ID</th>
         <th>Descrição</th>
         <th>Prioridade</th>
-        <th>Data Abertura</th>
-        <th>Data Fechamento</th>
         <th>Em Andamento</th>
-        <th>Moto</th>
+        <th>Placa Moto</th>
         <th>Ações</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="g : ${manutencoes}">
-        <td th:text="${g.id}">ID</td>
-        <td th:text="${g.descricao != null ? g.descricao : 'Sem descrição'}">Descrição</td>
-        <td th:text="${g.prioridadeManutencao != null ? g.prioridadeManutencao : 'MEDIA'}">Prioridade</td>
-        <td th:text="${g.dataAbertura != null ? #dates.format(g.dataAbertura, 'yyyy-MM-dd HH:mm') : 'Não definido'}">Data Abertura</td>
-        <td th:text="${g.dataFechamento != null ? #dates.format(g.dataFechamento, 'yyyy-MM-dd HH:mm') : 'Ainda não finalizado'}">Data Fechamento</td>
-        <td th:text="${g.emAndamento ? 'Sim' : 'Não'}">Em Andamento</td>
-        <td th:text="${g.moto != null ? g.moto.placa : 'Sem Moto'}">Moto</td>
+    <tr th:each="m : ${manutencoes}">
+        <td th:text="${m.id}"></td>
+        <td th:text="${m.descricao}"></td>
+        <td th:text="${m.prioridadeManutencao}"></td>
+        <td th:text="${m.emAndamento ? 'Sim' : 'Não'}"></td>
+        <td th:text="${m.placaMoto}"></td>
         <td>
-            <a th:href="@{/manutencoes-view/editar/{id}(id=${g.id})}">Editar</a>
-            <a th:href="@{/manutencoes-view/excluir/{id}(id=${g.id})}">Excluir</a>
+            <a th:href="@{'/manutencoes-view/editar/' + ${m.id}}">Editar</a>
+            <a th:href="@{'/manutencoes-view/excluir/' + ${m.id}}">Excluir</a>
         </td>
     </tr>
     </tbody>
 </table>
-
-<p th:if="${manutencoes == null or manutencoes.isEmpty()}">Nenhuma manutenção cadastrada.</p>
 
 <a th:href="@{/manutencoes-view/adicionar}" class="btn-adicionar">Adicionar Nova Manutenção</a>
 </body>

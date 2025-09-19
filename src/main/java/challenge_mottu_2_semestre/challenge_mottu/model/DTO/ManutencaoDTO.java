@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 public class ManutencaoDTO {
 
+    private Long id;
+
     private String descricao;
 
     private PrioridadeManutencao prioridadeManutencao = PrioridadeManutencao.MEDIA;
@@ -17,7 +19,10 @@ public class ManutencaoDTO {
 
     private boolean emAndamento;
 
-    private Long motoId;
+    private String placaMoto;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getDescricao() {
         return descricao;
@@ -59,7 +64,7 @@ public class ManutencaoDTO {
         this.emAndamento = emAndamento;
     }
 
-    public Long getMotoId() { return motoId; }
+    public String getPlacaMoto() { return placaMoto; }
 
-    public void setMotoId(Long motoId) { this.motoId = motoId; }
+    public void setPlacaMoto(String placaMoto) { this.placaMoto = placaMoto; }
 }

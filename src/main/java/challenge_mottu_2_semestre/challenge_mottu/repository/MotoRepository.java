@@ -11,5 +11,4 @@ public interface MotoRepository extends JpaRepository<Moto, Long> {
     boolean existsByMotoboyEmUsoId(Long id);
     boolean existsByGalpaoId(Long galpaoId);
     boolean existsByMotoboyEmUsoAndStatus(Motoqueiro motoqueiro, StatusMoto status);
-    List<Moto> findByStatusIn(List<StatusMoto> status);
 }

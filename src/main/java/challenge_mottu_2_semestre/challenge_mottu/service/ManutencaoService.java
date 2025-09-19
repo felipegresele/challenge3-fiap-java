@@ -19,53 +19,33 @@ public class ManutencaoService {
     @Autowired
     private ManutencaoRepository manutencaoRepository;
 
-    @Autowired
-    private MotoRepository motoRepository;
-
     public List<Manutencao> listarTodos() {
         return manutencaoRepository.findAll();
     }
 
     public Manutencao salvar(ManutencaoDTO dto) {
         Manutencao manutencao = new Manutencao();
-        BeanUtils.copyProperties(dto, manutencao, "moto"); // ignorando moto
-        if (dto.getMotoId() != null) {
-            Moto moto = motoRepository.findById(dto.getMotoId())
-                    .orElseThrow(() -> new IllegalArgumentException("Moto não encontrada"));
-            manutencao.setMoto(moto);
-            moto.setEmManutencao(true);
-            moto.setStatus(StatusMoto.MANUTENCAO);
-            motoRepository.save(moto);
-        }
+
+        manutencao.setDescricao(dto.getDescricao());
+        manutencao.setPrioridadeManutencao(dto.getPrioridadeManutencao());
+        manutencao.setDataAbertura(dto.getDataAbertura());
+        manutencao.setDataFechamento(dto.getDataFechamento());
+        manutencao.setPlacaMoto(dto.getPlacaMoto());
+        manutencao.setEmAndamento(dto.isEmAndamento());
+
         return manutencaoRepository.save(manutencao);
     }
 
     public Manutencao atualizar(Long id, ManutencaoDTO dto) {
         Manutencao manutencao = manutencaoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Manutenção não encontrada"));
-        BeanUtils.copyProperties(dto, manutencao, "moto"); // ignorando moto
-        if (dto.getMotoId() != null) {
-            Moto moto = motoRepository.findById(dto.getMotoId())
-                    .orElseThrow(() -> new IllegalArgumentException("Moto não encontrada"));
-            manutencao.setMoto(moto);
-            moto.setEmManutencao(true);
-            moto.setStatus(StatusMoto.MANUTENCAO);
-            motoRepository.save(moto);
-        } else {
-            manutencao.setMoto(null);
-        }
+        BeanUtils.copyProperties(dto, manutencao);
         return manutencaoRepository.save(manutencao);
     }
 
     public void deletar(Long id) {
         Manutencao manutencao = manutencaoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Manutenção não encontrada"));
-        Moto moto = manutencao.getMoto();
-        if (moto != null) {
-            moto.setEmManutencao(false);
-            moto.setStatus(StatusMoto.DISPONIVEL);
-            motoRepository.save(moto);
-        }
         manutencaoRepository.delete(manutencao);
     }
 
